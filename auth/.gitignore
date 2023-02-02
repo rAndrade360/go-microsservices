@@ -1,1 +1,4 @@
 .env
+.vscode
+auth-configmap.yaml
+auth-secret.yaml

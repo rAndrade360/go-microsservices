@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -28,8 +29,63 @@ type User struct {
 
 func main() {
 	http.HandleFunc("/login", login)
+	http.HandleFunc("/validate", validate)
+
 	log.Println("Server started in port :3000")
 	log.Fatal(http.ListenAndServe(":3000", nil))
+}
+
+func validate(rw http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		rw.WriteHeader(405)
+		rw.Write([]byte("Can not " + r.Method + " /login"))
+		return
+	}
+
+	token := r.Header.Get("Authorization")
+	rw.Header().Add("Content-Type", "application/json")
+
+	if len(token) == 0 {
+		rw.WriteHeader(401)
+		rw.Write([]byte(`{"message": "Unauthorized"}`))
+		return
+	}
+
+	ts := strings.Split(token, " ")
+
+	if len(ts) != 2 {
+		rw.WriteHeader(401)
+		rw.Write([]byte(`{"message": "Unauthorized"}`))
+		return
+	}
+
+	if ts[0] != "Bearer" {
+		rw.WriteHeader(401)
+		rw.Write([]byte(`{"message": "Unauthorized"}`))
+		return
+	}
+
+	t, err := jwt.Parse(ts[1], func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("invalid sigining method: %s", t.Header["alg"])
+		}
+
+		return []byte(os.Getenv("JWT_SECRET")), nil
+	})
+
+	if err != nil {
+		rw.WriteHeader(401)
+		rw.Write([]byte(`{"message": "Unauthorized"}`))
+		return
+	}
+
+	if !t.Valid {
+		rw.WriteHeader(401)
+		rw.Write([]byte(`{"message": "Unauthorized"}`))
+		return
+	}
+
+	rw.WriteHeader(204)
 }
 
 func login(rw http.ResponseWriter, r *http.Request) {
