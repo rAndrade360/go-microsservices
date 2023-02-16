@@ -1,6 +1,6 @@
-CREATE USER 'authuser'@'172.17.0.1' IDENTIFIED BY 'mypass';
+CREATE USER 'authuser'@'localhost' IDENTIFIED BY 'mypass';
 
-GRANT ALL PRIVILEGES ON auth.* TO 'authuser'@'172.17.0.1';
+GRANT ALL PRIVILEGES ON auth.* TO 'authuser'@'localhost';
 
 FLUSH PRIVILEGES;
 
@@ -13,4 +13,4 @@ CREATE TABLE users (
     PRIMARY KEY (`id`)
 );
 
-INSERT INTO users(email, password) VALUES("ratest@gmail.com", "$2a$10$LQliu1B8/S2xH1fdWW7ZC.oUefxsrRbhKEunPPa/xzY0E3y13IZt.");
+INSERT INTO users(email, password) VALUES("ratest@gmail.com", "$2a$10$djdpisPFXJ5j65X4Xd5D0ODhjL/gc9MjEjfefmngNfpwdn99OWw3q");
