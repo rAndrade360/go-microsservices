@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-configmap
+data:
+  LOGIN_URL: http://auth:8080/login
+  VALIDATE_TOKEN_URL: http://auth:8080/validate

@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 )
@@ -21,9 +22,18 @@ func (a loginHandler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	res, err := http.Post(os.Getenv("LOGIN_URL"), "application/json", r.Body)
 	if err != nil {
-		fmt.Fprint(rw)
+		rw.WriteHeader(500)
+		fmt.Fprint(rw, `{"message": "Internal Server Error"}`)
 	}
 
-	fmt.Fprint(rw, res.Body)
+	b, err := io.ReadAll(res.Body)
+	if err != nil {
+		rw.WriteHeader(500)
+		fmt.Fprint(rw, `{"message": "Internal Server Error"}`)
+	}
+
+	defer res.Body.Close()
+
 	rw.WriteHeader(res.StatusCode)
+	fmt.Fprint(rw, string(b))
 }
