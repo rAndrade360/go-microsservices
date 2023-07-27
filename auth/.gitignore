@@ -2,3 +2,4 @@
 .vscode
 auth-configmap.yaml
 auth-secret.yaml
+*secret.yaml

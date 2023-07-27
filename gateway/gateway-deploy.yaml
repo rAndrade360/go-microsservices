@@ -21,7 +21,7 @@ spec:
       containers:
         - name: gateway
           image: renandotcorrea/go-micro-gateway:latest
-          imagePullPolicy: Always
+          imagePullPolicy: Never
           ports:
             - containerPort: 8080
           envFrom:

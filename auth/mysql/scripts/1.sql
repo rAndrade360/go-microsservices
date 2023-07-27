@@ -13,4 +13,4 @@ CREATE TABLE users (
     PRIMARY KEY (`id`)
 );
 
-INSERT INTO users(email, password) VALUES("ratest@gmail.com", "$2a$10$djdpisPFXJ5j65X4Xd5D0ODhjL/gc9MjEjfefmngNfpwdn99OWw3q");
+INSERT INTO users(email, password) VALUES("ratest@gmail.com", "$2a$10$tHuykfXzTgTZgLiVY57Ep.bA57dqbZPnc5XnNWsFHYINTvZzvpuhy");
