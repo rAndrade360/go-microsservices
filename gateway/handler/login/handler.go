@@ -20,6 +20,8 @@ func (a loginHandler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	rw.Header().Add("Content-Type", "application/json")
+
 	res, err := http.Post(os.Getenv("LOGIN_URL"), "application/json", r.Body)
 	if err != nil {
 		rw.WriteHeader(500)
